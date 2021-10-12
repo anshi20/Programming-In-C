@@ -1,7 +1,7 @@
 #include<stdlib.h>
 #include<stdio.h>
 # define N 5
-int queue[N],front =-1,rear=-1;
+int queue[N];front =-1,rear=-1;
 void enqueue(int n)
 {
   if(rear==N-1)
@@ -63,11 +63,12 @@ void peek()
   else
     printf("%d",queue[front]);
 }
-int front=-1,rear=-1;
-int queue[N];
+
+
 int main()
 { int num,choice;
-  printf("1.Enqueue/t/t2.Dequeue/t/t3.Display/t/t4.Peek/t/t/5.Exit/n")
+  printf("1.Enqueue/t/t2.Dequeue/t/t3.Display/t/t4.Peek/t/t/5.Exit/n");
+  scanf("%d",&choice);
   while(1)
  {switch(choice)
   {
