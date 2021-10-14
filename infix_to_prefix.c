@@ -1,170 +1,181 @@
-        #include <stdio.h>
-        #include <math.h>
-        #include <string.h>
-        #include <stdlib.h>
-        #define MAX 20
-        void push(int);
-        char pop();
-        void infix_to_prefix();
-        int precedence(char);
-        char stack[20], infix[20], prefix[20];
-        int top = -1;
-        int main()
-        {
-                printf("\nINPUT THE INFIX EXPRESSION : ");
-                scanf("%s", infix);
-                infix_to_prefix();
-                return 0;
-        }
-        void push(int pos)
-        {
-                if (top == MAX - 1)
-                {
-                        printf("\nSTACK OVERFLOW\n");
-                }
-                else
-                {
-                        top++;
-                        stack[top] = infix[pos];
-                }
-        }
-        char pop()
-        {
-                char ch;
-                if (top < 0)
-                {
-                        printf("\n UNDERFLOW CONDITION\n");
-                        exit(0);
-                }
-                else
-                {
-                        ch = stack[top];
-                        stack[top] = '\0';
-                        top--;
-                        return (ch);
-                }
-                return 0;
-        }
-        void infix_to_prefix()
-        {
-                int i = 0, j = 0;
-                char temp;
-                int m=0, n=0;    
-                n = strlen (prefix) - 1;  
-                while ( m < n)   
-                {    
-                  temp = prefix[n];  
-                  prefix[m] = prefix[n];  
-                  prefix[m] = temp;  
-                  m++;   
-                  n--;   
-                }  
-                infix[n]='\0';
-                while (infix[i] != '\0')
-                {
-                        if (infix[i] >= 'a' && infix[i] <= 'z')
-                        {
-                                prefix[j] = infix[i];
-                                j++;
-                                i++;
-                        }
-                else if (infix[i] == ')' || infix[i] == '}' || infix[i] == ']')
-                {
-                        push(i);
-                        i++;
-                }
-                else if (infix[i] == '(' || infix[i] == '{' || infix[i] == '[') 
-                {
-                        if (infix[i] == '(')
-                        {
-                                while (stack[top] != ')') /* pop till opening bracket is found */
-                               {
-                                        prefix[j] = pop();
-                                        j++;
-                                }
-                                pop();
-                                i++;
-                        }
-                        else if (infix[i] == '[')
-                        {
-                                while (stack[top] != ']') 
-                                {
-                                        prefix[j] = pop();
-                                        j++;
-                                }
-                                pop();
-                                i++;
-                        }
-                        else if (infix[i] == '{')
-                        {
-                                while (stack[top] != '}') 
-                                {
-                                       prefix[j] = pop();
-                                        j++;
-                                }
-                                pop();
-                                i++;
-                        }
-                }
-                else
-                {
-                        if (top == -1)
-                        {
-                                push(i);
-                                i++;
-                        }
-                        else if (precedence(infix[i]) < precedence(stack[top]))
-                        {
-                                prefix[j] = pop(); 
-                                j++;              
-                                while (precedence(stack[top]) > precedence(infix[i]))
-                               {
-                                        prefix[j] = pop();
-                                        j++;
-                                        if (top < 0)
-                                        {
-                                                break;
-                                        }
-                                }
-                                push(i);
-                                i++;
-                        }
-                        else if (precedence(infix[i]) >= precedence(stack[top]))
-                        {
-                                push(i);
-                                i++;
-                        }
-                }
-        }
-        while (top != -1)
-        {
-                prefix[j] = pop();
-                j++;
-        }
-        int k=0, l=0;  
-        char temp2;
-        l = strlen (prefix) - 1;  
-        while ( k < l)   
-        {    
- 
-         temp2 = prefix[l];  
-         prefix[l] = prefix[k];  
-         prefix[k] = temp2;  
-         k++;   
-         l--;   
-        }  
-        prefix[l] = '\0';
-        printf("EQUIVALENT PREFIX NOTATION : %s ", prefix);
-}
-int precedence(char alpha)
+        #include<stdio.h>
+#include<string.h>
+#include<math.h>
+#include<stdlib.h>
+
+#define BLANK ' '
+#define TAB '\t'
+#define MAX 50
+
+long int pop();
+long int eval_pre();
+char infix[MAX], prefix[MAX];
+long int stack[MAX];
+int top;
+int isempty();
+int white_space(char symbol);
+
+void infix_to_prefix();
+int priority(char symbol);
+void push(long int symbol);
+long int pop();
+long int eval_pre();
+
+int main()
 {
-        if (alpha == '+' || alpha == '-')
-        {
-                return (1);
-        }
-        if (alpha == '*' || alpha == '/')
-        {
-                return (2);
-        }
+        long int value;
+        top = -1;
+        printf("Enter infix : ");
+        gets(infix);
+        infix_to_prefix();
+        printf("prefix : %s\n",prefix);
+        value=eval_pre();
+        printf("Value of expression : %ld\n",value);
+
         return 0;
+
+}/*End of main()*/
+
+void infix_to_prefix()
+{
+        int i,j,p,n;
+        char next ;
+        char symbol;
+        char temp;
+        n=strlen(infix);
+        p=0;
+
+        for(i=n-1; i>=0; i--)
+        {
+                symbol=infix[i];
+                if(!white_space(symbol))
+                {
+                        switch(symbol)
+                        {
+                        case ')':
+                                push(symbol);
+                                break;
+                        case '(':
+                                while( (next=pop()) != ')')
+                                        prefix[p++] = next;
+                                break;
+                        case '+':
+                        case '-':
+                        case '*':
+                        case '/':
+                        case '%':
+                        case '^':
+                                while( !isempty( ) &&  priority(stack[top])> priority(symbol) )
+                                        prefix[p++] = pop();
+                                push(symbol);
+                                break;
+                        default: /*if an operand comes*/
+                             prefix[p++] = symbol;
+                        }
+                }
+        }
+        while(!isempty( ))
+                prefix[p++] = pop();
+        prefix[p] = '\0'; /*End prefix with'\0' to make it a string*/
+
+        for(i=0,j=p-1;i<j;i++,j--)
+        {
+                temp=prefix[i];
+                prefix[i]=prefix[j];
+                prefix[j]=temp;
+        }
+}/*End of infix_to_prefix()*/
+
+/* This function returns the priority of the operator */
+int priority(char symbol )
+{
+        switch(symbol)
+        {
+        case ')':
+                return 0;
+        case '+':
+        case '-':
+                return 1;
+        case '*':
+        case '/':
+        case '%':
+                return 2;
+        case '^':
+                return 3;
+        default :
+                 return 0;
+        }/*End of switch*/
+}/*End of priority()*/
+
+void push(long int symbol)
+{
+        if(top > MAX)
+        {
+                printf("Stack overflow\n");
+                exit(1);
+        }
+        else
+        {
+                top=top+1;
+                stack[top] = symbol;
+        }
+}/*End of push()*/
+
+long int pop()
+{
+        if(top == -1 )
+        {
+                exit(2);
+        }
+        return (stack[top--]);
+}/*End of pop()*/
+int isempty()
+{
+        if(top==-1)
+                return 1;
+        else
+                return 0;
+}
+
+int white_space(char symbol)
+{
+        if(symbol==BLANK || symbol==TAB || symbol=='\0')
+                return 1;
+        else
+                return 0;
+}/*End of white_space()*/
+
+long int eval_pre()
+{
+        long int a,b,temp,result;
+        int i;
+
+        for(i=strlen(prefix)-1;i>=0;i--)
+        {
+                if(prefix[i]<='9' && prefix[i]>='0')
+                        push( prefix[i]-48 );
+                else
+                {
+                        b=pop();
+                        a=pop();
+                        switch(prefix[i])
+                        {
+                        case '+':
+                                temp=b+a; break;
+                        case '-':
+                                temp=b-a;break;
+                        case '*':
+                                temp=b*a;break;
+                        case '/':
+                                temp=b/a;break;
+                        case '%':
+                                temp=b%a;break;
+                        case '^':
+                                temp=pow(b,a);
+                        }
+                        push(temp);
+                }
+        }
+        result=pop();
+        return result;
 }
