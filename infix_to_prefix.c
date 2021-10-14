@@ -48,6 +48,7 @@
         void infix_to_prefix()
         {
                 int i = 0, j = 0;
+                char temp;
                 int m=0, n=0;    
                 n = strlen (prefix) - 1;  
                 while ( m < n)   
@@ -118,7 +119,7 @@
                                 j++;              
                                 while (precedence(stack[top]) > precedence(infix[i]))
                                {
-                                        prefix[j] = pop(); /
+                                        prefix[j] = pop();
                                         j++;
                                         if (top < 0)
                                         {
@@ -140,14 +141,15 @@
                 prefix[j] = pop();
                 j++;
         }
-        int k=0, l=0;    
+        int k=0, l=0;  
+        char temp2;
         l = strlen (prefix) - 1;  
         while ( k < l)   
         {    
  
-         temp = prefix[l];  
+         temp2 = prefix[l];  
          prefix[l] = prefix[k];  
-         prefix[k] = temp;  
+         prefix[k] = temp2;  
          k++;   
          l--;   
         }  
