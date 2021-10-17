@@ -1,64 +1,73 @@
-#include<stdio.h>
-#include<ctype.h>
+#include <stdio.h>
+#include <ctype.h>
 
-char stack[100];
-int top = -1;
+#define SIZE 50            
 
-void push(char x)
-{
-    stack[++top] = x;
+char stack[SIZE];
+int top=-1;       /* Global declarations */
+ 
+void push(char elem)
+{                       
+    stack[++top]=elem;
 }
-
+ 
 char pop()
-{
-    if(top == -1)
-        return -1;
-    else
-        return stack[top--];
+{                     
+    return(stack[top--]);
 }
-
-int priority(char x)
-{
-    if(x == '(')
-        return 0;
-    if(x == '+' || x == '-')
-        return 1;
-    if(x == '*' || x == '/')
-        return 2;
-    return 0;
-}
-
-int main()
-{
-    char exp[100];
-    char *e, x;
-    printf("Enter the expression : ");
-    scanf("%s",exp);
-    printf("\n");
-    e = exp;
+ 
+int pr(char symbol)
+{ /* Function for precedence */
     
-    while(*e != '\0')
+	if(symbol == '^')                                /* exponent operator, highest precedence*/
+	{
+		return(3);
+	}
+	else if(symbol == '*' || symbol == '/')
+	{
+		return(2);
+	}
+	else if(symbol == '+' || symbol == '-')          /* lowest precedence */
+	{
+		return(1);
+	}
+	else
+	{
+		return(0);
+	}
+}
+
+void main()
+{                        
+    char infix[50],postfix[50],ch,elem;
+    int i=0,k=0;
+    printf("Enter Infix Expression : ");
+    scanf("%s",infix);
+    push('#');
+    while( (ch=infix[i++]) != '\0')
     {
-        if(isalnum(*e))
-            printf("%c ",*e);
-        else if(*e == '(')
-            push(*e);
-        else if(*e == ')')
-        {
-            while((x = pop()) != '(')
-                printf("%c ", x);
-        }
+        if( ch == '(')
+            push(ch);
         else
-        {
-            while(priority(stack[top]) >= priority(*e))
-                printf("%c ",pop());
-            push(*e);
-        }
-        e++;
+            if(isalnum(ch)) 
+                postfix[k++]=ch;
+            else
+            {    if( ch == ')')
+                {
+                    while( stack[top] != '(')
+                        postfix[k++]=pop();
+                    elem=pop();                               /* Remove ( */
+                }
+                else
+                {       /* Operator */
+                    while( pr(stack[top]) >= pr(ch) )
+                        postfix[k++]=pop();
+                    push(ch);
+                }
+            }
     }
-    
-    while(top != -1)
-    {
-        printf("%c ",pop());
-    }return 0;
+    while( stack[top] != '#')     /* Pop from stack till empty */
+        postfix[k++]=pop();
+    postfix[k]='\0';              /* Make postfix as valid string */
+    printf("\nPostfix Expression =  %s\n",postfix);
 }
