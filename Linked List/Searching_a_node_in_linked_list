@@ -1,0 +1,48 @@
+// Write a function to get Nth node in a Linked List
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* next;
+};
+struct Node* head=NULL;
+void Insert(int x)
+{
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node*));
+    temp->data=x;
+    temp->next=head;
+    head=temp;
+}
+int search(struct Node* head, int n)
+{
+    if (head == NULL)
+        return -1;
+    if (n == 0)
+        return head->data;
+    return search(head->next,n - 1);
+}
+ 
+int main()
+{
+    int i,n,element,num;
+    printf("How many elements you want to insert in the list ? ");
+    scanf("%d",&n);
+    for(i=0;i<n;i++)
+    {
+        printf("\nEnter the element : ");
+        scanf("%d",&num);
+        Insert(num);
+    }
+    printf("\nEnter element to be searched : ");
+    scanf("%d",&element);
+    int position=search(element);
+    if(position==0)
+            printf("\nElement not found! \n");
+    else if(position==n)
+            printf("\nElement %d found at %d position",element,n); 
+    else
+            printf("\nElement %d found at %d position",element,n+1-position); 
+    return 0;
+}
