@@ -1,0 +1,81 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+    int data;
+    struct node* link;
+};
+struct node* top=NULL;
+void push(int x)
+{
+    struct node* newnode = (struct node*)malloc(sizeof(struct node));
+    newnode->data=x;
+    newnode->link=top;
+    top=newnode;
+}
+void pop()
+{
+    if(top==NULL){
+        printf("\nEmpty Stack!\n");
+        return ;
+    }
+    struct node* temp = (struct node*)malloc(sizeof(struct node));
+    temp=top;
+    printf("\nDeleting element %d....\n",temp->data);
+    top=temp->link;
+    free(temp);
+}
+void display()
+{
+    if(top==NULL){
+        printf("\nEmpty Stack!\n");
+        return ;
+    }
+    struct node* temp = (struct node*)malloc(sizeof(struct node));
+    temp=top;
+    while(temp->link!=NULL)
+    {
+        printf("%d\t",temp->data);
+        temp=temp->link;
+    }
+    printf("%d\t",temp->data);
+}
+void peek()
+{
+    if(top==NULL){
+        printf("\nEmpty Stack!\n");
+        return ;
+    }
+    printf("%d",top->data);
+}
+int main()
+{
+	int choice, item;
+	while(1)
+	{
+		printf("                            MENU                   ");
+		printf("\n1.Push element to stack\t\t2.Pop element from stack\n");
+		printf("3.Display the stack\t\t\t4.Peek\t\t\t5.Exit\n");
+		printf("Enter your choice : ");
+		scanf("%d",&choice);
+		switch(choice)
+		{
+			case 1 : printf("\nEnter element : ");
+			         scanf("%d",&item);
+					 push(item);
+					 break; 
+			case 2 : printf("\n");
+			         pop();
+			         break;
+			case 3 : printf("\nDisplaying the stack ...\n");
+			         display();
+			         break;
+			case 4 : printf("\nDisplaying the top of the stack...\n");
+		             peek();
+					 break;
+		    case 5 : printf("\nexiting...\n");
+		             exit(0);
+		    default: printf("\nINVALID CHOICE !!!\n");
+		}
+	}
+	return 0;
+}
