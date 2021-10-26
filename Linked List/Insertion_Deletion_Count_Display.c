@@ -1,4 +1,4 @@
-// Counting no. of nodes in linked list
+// Counting no. of nodes in a linked list
 
 #include<stdlib.h>
 #include <stdio.h>
@@ -13,6 +13,7 @@ void insert(int x)
     temp->data=x;
     temp->next=head;
     head=temp;
+    
 }
 void display()
 {
