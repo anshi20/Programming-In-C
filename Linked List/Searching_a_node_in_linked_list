@@ -1,4 +1,5 @@
 // Write a function to get Nth node in a Linked List
+// Online C compiler to run C program online
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -30,9 +31,7 @@ int search(int n)
             temp=temp->next;
             pos++;
         }
-    }
-    //return 0;
-    printf("\nNode not found !!\n");
+    }    printf("\nNode not found !!\n");
     return 0;
 }
  
@@ -50,11 +49,13 @@ int main()
     printf("\nEnter element to be searched : ");
     scanf("%d",&element);
     int position=search(element);
+    if(position==0);
+      
     //if(position==0)
             //printf("\nElement not found! \n");
     //else if(position==n)
             //printf("\nElement %d found at %d position",element,n); 
-    
-    printf("\nElement %d found at %d position",element,position); 
+    else
+        printf("\nElement %d found at %d position",element,position); 
     return 0;
 }
