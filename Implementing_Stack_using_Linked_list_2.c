@@ -66,7 +66,7 @@ int peek( struct Node* top)
 int main()
 {
     struct Node* top=NULL;
-    top = (struct Node*)malloc(sizeof(struct Node));
+    //top = (struct Node*)malloc(sizeof(struct Node));
     int n, choice;
     while(1)
 	{
