@@ -79,8 +79,8 @@ int main()
 		{
 			case 1 : printf("\nEnter element : ");
 			         scanf("%d",&n);
-					 top = push(top,n);
-					 break; 
+				 top = push(top,n);
+				 break; 
 			case 2 : printf("\n");
 			         int num = pop(&top);
 			         printf("\nDeleted %d from stack\n",num);
@@ -89,11 +89,11 @@ int main()
 			         display(top);
 			         break;
 			case 4 : printf("\nDisplaying the top of the stack...");
-		             printf("%d ",peek(top));
-					 break;
-		    case 5 : printf("\nexiting...\n");
-		             exit(0);
-		    default: printf("\nINVALID CHOICE !!!\n");
+		                 printf("%d ",peek(top));
+				 break;
+		        case 5 : printf("\nexiting...\n");
+		                 exit(0);
+		        default: printf("\nINVALID CHOICE !!!\n");
 		}
 	}
     return 0;
