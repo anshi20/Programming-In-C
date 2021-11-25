@@ -1,0 +1,107 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<stdbool.h>
+struct node{
+    int data;
+    struct node* next;
+};
+
+struct node* push(struct node** start, int x)
+{
+    struct node* newnode = (struct node*)malloc(sizeof(struct node));
+    newnode->data=x;
+    newnode->next=*start;
+    *start=newnode;
+    return *start;
+}
+
+bool search(struct node* start, int key)
+{
+    while(start!=NULL)
+    {
+        if(start->data==key)
+           return true;
+        start=start->next;
+    }
+    return false;
+}
+
+void delete(struct node **head, int key)
+{
+      //temp is used to freeing the memory
+      struct node *temp;
+
+      //key found on the head node.
+      //move to head node to the next and free the head.
+      if((*head)->data == key)
+      {
+          temp = *head;    //backup to free the memory
+          *head = (*head)->next;
+          free(temp);
+      }
+      
+
+      else
+      {
+          struct node *current  = *head;
+          while(current->next != NULL)
+          {
+              //if yes, we need to delete the current->next node
+              if(current->next->data == key)
+              {
+                  temp = current->next;
+                  //node will be disconnected from the linked list.
+                  current->next = current->next->next;
+                  free(temp);
+                  break;
+              }
+              //Otherwise, move the current node and proceed
+              else
+                  current = current->next;
+          }
+      }
+    
+
+}
+
+void display(struct node* start)
+{
+    while(start!=NULL)
+    {
+        printf("%d\t",start->data);
+        start=start->next;
+    }
+}
+
+int main()
+{
+    struct node* start  = NULL;
+    int ch=1,num;
+    
+    printf("\nSINGLY  LINKED  LIST\n");
+    while(ch)
+    {
+        printf("Enter value of node to be inserted : ");
+        scanf("%d",&num);
+        push(&start,num);
+        printf("\nNode inserted");
+        printf("\nWant to enter more? Press 1, Else Press 0 : ");
+        scanf("%d",&ch);
+    }
+    printf("\nlinked list : \n");
+    display(start);
+    int elem;
+    printf("\nEnter the key to be searched  : ");
+    scanf("%d",&elem);
+    if(search(start,elem))
+    {
+        delete(&start,elem);
+    }
+    else
+    {
+        printf("\nKey not found!\n");
+    }
+    printf("\nlinked list : \n");
+    display(start);
+    return 0;
+}
