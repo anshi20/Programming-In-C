@@ -6,7 +6,7 @@ struct node{
     struct node* next;
 };
 
-struct node* push(struct node** start, int x)
+struct node* insert(struct node** start, int x)
 {
     struct node* newnode = (struct node*)malloc(sizeof(struct node));
     newnode->data=x;
@@ -83,7 +83,7 @@ int main()
     {
         printf("Enter value of node to be inserted : ");
         scanf("%d",&num);
-        push(&start,num);
+        insert(&start,num);
         printf("\nNode inserted");
         printf("\nWant to enter more? Press 1, Else Press 0 : ");
         scanf("%d",&ch);
