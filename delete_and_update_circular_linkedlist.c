@@ -6,13 +6,12 @@ struct node{
     struct node* next;
 };
 
-struct node* insert(struct node** start, int x)
+void insert(struct node** start, int x)
 {
     struct node* newnode = (struct node*)malloc(sizeof(struct node));
     newnode->data=x;
     newnode->next=*start;
     *start=newnode;
-    return *start;
 }
 
 bool search(struct node* start, int key)
@@ -53,7 +52,7 @@ void delete(struct node **head, int key)
       else
       {
           struct node *current  = *head;
-          while(current->next != NULL)
+          do
           {
               //if yes, we need to delete the current->next node
               if(current->next->data == key)
@@ -67,7 +66,7 @@ void delete(struct node **head, int key)
               //Otherwise, move the current node and proceed
               else
                   current = current->next;
-          }
+          }while(current->next != *head);
       }
     
 
