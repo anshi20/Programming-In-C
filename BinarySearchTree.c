@@ -1,4 +1,7 @@
-#include<stdio.h>
+// Binary Search Tree : Recursive Insertion  -----------  Inorder Traversal
+
+
+include<stdio.h>
 #include<stdlib.h>
 struct btree{
   int data;
